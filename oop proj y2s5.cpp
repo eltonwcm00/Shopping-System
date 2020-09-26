@@ -1067,6 +1067,7 @@ int main() {
 
 }
 
+//**clion git push 1st test**
 
 // CREDIT : https://stackoverflow.com/questions/2393345/how-to-append-text-to-a-text-file-in-c
 //          https://www.youtube.com/watch?v=s3-DmI1ZWxE&t=151s
