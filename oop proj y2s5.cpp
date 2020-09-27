@@ -262,6 +262,7 @@ class Magazine: public ShopItem {
 
 	friend void insertNewItemsLogic();
 	friend void deleteItemsLogic();
+	friend void updateItemsLogic();
 };
 
 class Book: public ShopItem {
@@ -274,6 +275,7 @@ class Book: public ShopItem {
 
 	friend void insertNewItemsLogic();
 	friend void deleteItemsLogic();
+    friend void updateItemsLogic();
 };
 
 class Movie: public ShopItem {
@@ -286,6 +288,7 @@ class Movie: public ShopItem {
 
 	friend void insertNewItemsLogic();
 	friend void deleteItemsLogic();
+    friend void updateItemsLogic();
 };
 
 /*********************************************** OWNER SHOW ITEM CLASS ***********************************************/
@@ -355,7 +358,7 @@ class DeleteItem {
 class UpdateItem {
 	
 	private:
-		int category_number, category_details_number ;
+		int category_number, category_details_number, update_id = 0 ;
 		int update_item_units = 0;
 		string update_item_name, update_item_company;
 		float update_item_price = 0;
@@ -416,66 +419,118 @@ class UpdateItem {
 		}
 
 		void updateItemsAskInput() {
-			switch(category_number) {
-		
-				case 1 : 
-				case 2 :
-				case 3 : switch(category_details_number) {
-					 
-					 		case 1: cout<<"Enter the new product name : "; 
-									getline(cin, update_item_name);
-							 		break;
+            switch (category_number) {
 
-					 		case 2: cout<<"Enter the new product price : ";
-					 				cin>>update_item_price;
-									break;
+                case 1 :
+                case 2 :
+                case 3 :
+                    switch (category_details_number) {
 
-					 		case 3: cout<<"Enter the new product units : ";
-					 		 		cin>>update_item_units;
-									break;
+                        case 1:
+                            cout << "Enter the new product name : ";
+                            getline(cin, update_item_name);
+                            break;
 
-					 		case 4: cout<<"Enter the new product manufacture : ";
-					 		 		getline(cin, update_item_company);
-									break;
+                        case 2:
+                            cout << "Enter the new product price : ";
+                            cin >> update_item_price;
+                            break;
 
-						}
-			}
-	
-			switch(category_number) {
-		
-				case 1 : switch(category_details_number) { 
-					 		
-							 case 5: cout<<"Enter the new publication year : ";
-					 		 		 cin>>update_magazine_yr;
-							 		 break;	
+                        case 3:
+                            cout << "Enter the new product units : ";
+                            cin >> update_item_units;
+                            break;
 
-					 		 case 6: cout<<"Enter the new publication month : ";
-					 				 cin>>update_magazine_month;
-								     break;	
-				 		 }
+                        case 4:
+                            cout << "Enter the new product manufacture : ";
+                            getline(cin, update_item_company);
+                            break;
 
-				 		 break;
-		
-				case 2 : switch(category_details_number) {
-					 		
-							 case 5: cout<<"Enter the new author name : ";
-					 		 		 getline(cin, update_book_author);
-							 		 break;
-				 		 }
-				 
-				         break;
-				
-				case 3 : switch(category_details_number) {
+                    }
+            }
 
-					 		 case 5: cout<<"Enter the new actor name : ";
-					 				 getline(cin, update_movie_actor);
-									 break;
-				 		 }
-				 
-				 		 break;
-			}
-		}
+            switch (category_number) {
 
+                case 1 :
+                    switch (category_details_number) {
+
+                        case 5:
+                            cout << "Enter the new publication year : ";
+                            cin >> update_magazine_yr;
+                            break;
+
+                        case 6:
+                            cout << "Enter the new publication month : ";
+                            cin >> update_magazine_month;
+                            break;
+                    }
+
+                    break;
+
+                case 2 :
+                    switch (category_details_number) {
+
+                        case 5:
+                            cout << "Enter the new author name : ";
+                            getline(cin, update_book_author);
+                            break;
+                    }
+
+                    break;
+
+                case 3 :
+                    switch (category_details_number) {
+
+                        case 5:
+                            cout << "Enter the new actor name : ";
+                            getline(cin, update_movie_actor);
+                            break;
+                    }
+
+                    break;
+            }
+        }
+
+        void updateEnterByIdOption() {
+            cout<<"Enter the ID of the product that you wish to delete from the stock list"<<endl;
+            cin>>update_id;
+        }
+
+        int getUpdateId() {
+            return update_id;
+        }
+
+        string updategetItemName() {
+            return update_item_name;
+        }
+
+        float updategetItemPrice() {
+            return update_item_price;
+        }
+
+        int updategetItemUnit() {
+            return update_item_units;
+        }
+
+        string updategetItemCompany() {
+            return update_item_company;
+        }
+
+        int updategetItemYr() {
+            return update_magazine_yr;
+        }
+
+        int updategetItemMonth() {
+            return update_magazine_month;
+        }
+
+        string updategetItemAuthor() {
+            return update_book_author;
+        }
+
+        string updategetItemActor() {
+            return update_movie_actor;
+        }
 };
 
 /*********************************************** registerLogic() ***********************************************/
@@ -995,15 +1050,119 @@ void deleteItemsLogic() {
 void updateItemsLogic() {
 
 	UpdateItem update_item_obj;
+	InsertNewItems insert_item_obj;
+	Movie insert_movie_obj;
+	Magazine insert_magazine_obj;
+	Book insert_book_obj;
+
+	ofstream out_update_file;
+	ifstream in_update_file;
+
+	int update_itemreadid = 0;
+	string update_itemreadname;
+
+	update_itemreadid = insert_item_obj.insertgetId();
+    update_itemreadname = insert_item_obj.insertgetName();
+
+    string update_itemreadcompany, update_bookreadauthor, update_moviereadactor;
+    int  update_itemreadunits, update_magazinereadyr, update_magazinereadmonth;
+    float update_itemreadprice;
+
+    update_itemreadprice = insert_item_obj.insertgetPrice();
+    update_itemreadunits = insert_item_obj.insertgetUnit();
+    update_itemreadcompany = insert_item_obj.insertgetCompany();
+    update_magazinereadyr = insert_magazine_obj.shopitem_yr;
+    update_magazinereadmonth = insert_magazine_obj.shopitem_month;
+    update_bookreadauthor = insert_book_obj.shopitem_author;
+    update_moviereadactor = insert_book_obj.shopitem_actor;
+
+    string update_itemname, update_itemcompany, update_bookauthor, update_movieactor;
+    int update_itemid, update_itemunits, update_magazineyr, update_magazinemonth;
+    float update_itemprice;
+
+    update_itemname = update_item_obj.updategetItemName();
+    update_itemprice = update_item_obj.updategetItemPrice();
+    update_itemunits = update_item_obj.updategetItemUnit();
+    update_itemcompany = update_item_obj.updategetItemCompany();
+    update_magazineyr = update_item_obj.updategetItemYr();
+    update_magazinemonth = update_item_obj.updategetItemMonth();
+    update_bookauthor = update_item_obj.updategetItemAuthor();
+    update_movieactor = update_item_obj.updategetItemActor();
 
 	update_item_obj.updateItemsCategory();
-	update_item_obj.updateItemsInput();
-	update_item_obj.updateItemsAskInput();
 
-	//switch(update_item_obj.)
+	update_item_obj.updateEnterByIdOption();
+	update_itemid = update_item_obj.getUpdateId();
+
+    update_item_obj.updateItemsInput();
+    update_item_obj.updateItemsAskInput();
+
+    switch(update_item_obj.getupdateItemsCategoryNumber()) {
+
+	    case 1 : in_update_file.open("owner-magazine-insert.txt");
+	             out_update_file.open("temp_updatemag.txt");
+
+	             if(in_update_file.is_open()) {
+
+	                 while(in_update_file>>update_itemid, getline(in_update_file, update_itemreadname)) {
+
+	                     if(update_itemreadid == update_itemid) {
+
+
+                             switch(update_item_obj.getupdateItemsCategoryDetailsNumber()) {
+                                 case 1: out_update_file<<update_itemreadid<<setw(15)<<update_itemname<<setw(15)<<update_itemreadprice<<setw(15)<<
+                                                          update_itemreadunits<<setw(15)<<update_itemreadcompany<<setw(15)<<update_magazinereadyr<<update_magazinereadmonth<<endl;
+                                         break;
+
+                                 case 2: break;
+
+                                 case 3: break;
+
+                                 case 4: break;
+
+                                 case 5: break;
+
+                                 case 6: break;
+                             }
+	                     }
+
+                     }
+
+                     in_update_file.close();
+                     out_update_file.close();
+
+	             } else {
+                     cout<<"File is not found !";
+                     exit(1);
+	             }
+
+	    case 2: in_update_file.open("owner-book-insert.txt");
+                out_update_file.open("temp_updatebook.txt");
+
+                switch(update_item_obj.getupdateItemsCategoryDetailsNumber()) {
+                    case 1: break;
+                    case 2: break;
+                    case 3: break;
+                    case 4: break;
+                    case 5: break;
+                }
+                break;
+
+	    case 3: in_update_file.open("owner-movie-insert.txt");
+                out_update_file.open("temp_updatemovie.txt");
+
+                switch(update_item_obj.getupdateItemsCategoryDetailsNumber()) {
+                    case 1: break;
+                    case 2: break;
+                    case 3: break;
+                    case 4: break;
+                    case 5: break;
+                    case 6: break;
+                }
+                break;
+	}
 }
 
-	
 /*********************************************** int main() ***********************************************/
 
 int main() {	
