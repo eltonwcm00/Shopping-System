@@ -22,9 +22,9 @@ Phone :                 01111207201
 #include<fstream>
 #include<iomanip>
 #include<string>
-#include<cstdlib>
-#include<ctime>
-//#include<time.h>
+#include<stdlib.h>
+//#include<ctime>
+#include<time.h>
 #include<algorithm>
 using namespace std;
 
@@ -147,7 +147,7 @@ public:
 class InsertNewItems {
 
 private:
-    int new_item_units, number, category_number, /*rand_number*/id ;
+    int new_item_units, number, category_number, rand_number = 0, id ;
     string new_item_name, new_item_company;
     float new_item_price;
 
@@ -182,10 +182,11 @@ public:
     }
 
     void insertItemsMenuDetails() {
-        cout<<"Product ID : ";
-        cin>>id;
 
-        cin.ignore();
+        srand(time(NULL));
+        rand_number = rand()%20;
+
+        cout<<"Product ID : "<<rand_number<<endl;
 
         cout<<"Product name : ";
         getline(cin, new_item_name);
@@ -203,7 +204,7 @@ public:
     }
 
     int insertgetId() {
-        return id;
+        return rand_number;
     }
 
     string insertgetName() {
@@ -222,18 +223,10 @@ public:
         return new_item_company;
     }
 
-    /*insertRandGenerate() {
-        srand(time(NULL));
-        rand_number = rand()%20;
-    }*/
-
-    /*getInsertRandGenerate() {
-        return rand_number;
-    }*/
-
     friend void insertNewItemsLogic();
 
 };
+
 class ShopItem {
 
 protected:
@@ -245,7 +238,6 @@ protected:
 
 public:
     virtual void itemDisplay() = 0;
-
 };
 
 class Magazine: public ShopItem {
@@ -304,7 +296,7 @@ public:
         cout<<" 1. Magazine\n 2. Book\n 3. Movie"<<endl;
         cout<<"-------------------"<<endl;
 
-        cout<<"Which catergory of items you would like to see ? "<<endl;
+        cout<<"Which category of items you would like to see ? "<<endl;
         cin>>selection;
     }
 
@@ -418,7 +410,7 @@ public:
                 getline(cin, update_movie_actor);
                 break;
 
-            default: cout<<"Please choose a appopriate category to update ! Try again later"<<endl;
+            default: cout<<"Please choose a appropriate category to update ! Try again later"<<endl;
                 exit(1);
         }
         cout<<endl;
@@ -565,7 +557,7 @@ void loginPassValidationLogic() {
 
         while(!in_log_file_user.eof()) {
 
-            /**/		getline(in_log_file_user, password);
+            getline(in_log_file_user, password);
 
             if((offset_pass = password.find(pass, 0))!= string::npos) {
                 validate_pass = true;
@@ -714,7 +706,7 @@ void insertNewItemsLogic() {
 
             /*random_number = insert_new_obj.getInsertRandGenerate();*/
 
-            new_itemid = insert_new_obj.id;
+            new_itemid = insert_new_obj.rand_number;
             new_itemname = insert_new_obj.new_item_name;
             new_itemprice = insert_new_obj.new_item_price;
             new_itemunits = insert_new_obj.new_item_units;
@@ -1044,13 +1036,13 @@ void updateItemsLogic() {
                 while (in_update_file >> update_itemreadid, getline(in_update_file, update_itemreadname)) {
 
                     if (update_itemreadid == update_itemid) {
-                        out_update_file << update_itemreadid << setw(15) << update_itemname << setw(15)
-                                        << update_itemprice << setw(15)
-                                        << update_itemunits << setw(15) << update_itemcompany << setw(15)
-                                        << update_magazineyr << setw(15)
-                                        << update_magazinemonth << endl;
+                        out_update_file<<update_itemreadid<<setw(15)<<update_itemname<<setw(15)
+                                       <<update_itemprice<<setw(15)
+                                       <<update_itemunits<<setw(15)<<update_itemcompany << setw(15)
+                                       <<update_magazineyr<<setw(15)
+                                       <<update_magazinemonth << endl;
                     } else {
-                        out_update_file << update_itemreadid << setw(15) << update_itemreadname << endl;
+                        out_update_file<<update_itemreadid<<setw(15)<<update_itemreadname<<endl;
                     }
                 }
 
@@ -1061,7 +1053,7 @@ void updateItemsLogic() {
                 rename("temp_updatemag.txt", "owner-magazine-insert.txt");
 
             } else {
-                cout << "File is not found !";
+                cout<<"File is not found !";
                 exit(1);
             }
 
@@ -1076,12 +1068,12 @@ void updateItemsLogic() {
                 while (in_update_file >> update_itemreadid, getline(in_update_file, update_itemreadname)) {
 
                     if (update_itemreadid == update_itemid) {
-                        out_update_file << update_itemreadid << setw(15) << update_itemname << setw(15)
-                                        << update_itemprice << setw(15)
-                                        << update_itemunits << setw(15) << update_itemcompany << setw(15)
-                                        << update_bookauthor << endl;
+                        out_update_file<<update_itemreadid<<setw(15)<<update_itemname<<setw(15)
+                                       <<update_itemprice<<setw(15)
+                                       <<update_itemunits<<setw(15)<<update_itemcompany<<setw(15)
+                                       <<update_bookauthor<<endl;
                     } else {
-                        out_update_file << update_itemreadid << setw(15) << update_itemreadname << endl;
+                        out_update_file<<update_itemreadid<<setw(15)<<update_itemreadname<<endl;
                     }
                 }
 
@@ -1092,7 +1084,7 @@ void updateItemsLogic() {
                 rename("temp_updatebook.txt", "owner-book-insert.txt");
 
             } else {
-                cout << "File is not found !";
+                cout<<"File is not found !";
                 exit(1);
             }
 
@@ -1107,12 +1099,12 @@ void updateItemsLogic() {
                 while (in_update_file >> update_itemreadid, getline(in_update_file, update_itemreadname)) {
 
                     if (update_itemreadid == update_itemid) {
-                        out_update_file << update_itemreadid << setw(15) << update_itemname << setw(15)
-                                        << update_itemprice << setw(15)
-                                        << update_itemunits << setw(15) << update_itemcompany << setw(15)
-                                        << update_bookauthor << endl;
+                        out_update_file <<update_itemreadid<<setw(15)<<update_itemname<<setw(15)
+                                        <<update_itemprice<<setw(15)
+                                        <<update_itemunits<<setw(15)<<update_itemcompany<<setw(15)
+                                        <<update_bookauthor<<endl;
                     } else {
-                        out_update_file << update_itemreadid << setw(15) << update_itemreadname << endl;
+                        out_update_file<<update_itemreadid<<setw(15)<<update_itemreadname<<endl;
                     }
                 }
 
@@ -1123,24 +1115,27 @@ void updateItemsLogic() {
                 rename("temp_updatemovie.txt", "owner-movie-insert.txt");
 
             } else {
-                cout << "File is not found !";
+                cout<<"File is not found !";
                 exit(1);
             }
 
             break;
     }
+
+    cout<<endl;
+    cout<<"Update successfully ! Proceed to View Item to see the latest stock list"<<endl;
 }
 
 
 /*********************************************** int main() ***********************************************/
 
-    int main() {
+int main() {
 
-        menuLogic();
-        //deleteItemsLogic();
+    menuLogic();
+    //deleteItemsLogic();
 
-        return 0;
-    }
+    return 0;
+}
 
 //**clion git push 1st test**
 
@@ -1153,8 +1148,7 @@ void updateItemsLogic() {
 //          https://www.systutorials.com/how-to-process-a-file-line-by-line-in-c/
 
 
-/***random gen number issue
-    *global var*
-****/
-
-
+/** * random gen number issue ( X )
+    * negative numb issue
+    * login / register before using
+    */
