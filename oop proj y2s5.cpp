@@ -23,7 +23,6 @@ Phone :                 01111207201
 #include<fstream>
 #include<iomanip>
 #include<string>
-#include<string.h>
 #include<stdlib.h>
 #include<time.h>
 #include<algorithm>
@@ -1147,6 +1146,7 @@ void deleteItemsLogic() {
                 remove("owner-movie-insert.txt");
                 rename("tmp_movie.txt", "owner-movie-insert.txt");
 
+
             } else {
                 cout<<"File is not found !";
                 exit(1);
@@ -1332,32 +1332,27 @@ void changeInfoLogic() {
     string change_info_username, change_info_pass, change_info_cfrmpass;
     int change_info_id_present;
 
-    /*int change_offset_name;
-    bool get_name*/;
 
     change_readid = reg_obj.getId();
     oname = reg_obj.getUser();
     password = reg_obj.getPass();
     cfrmpassword = reg_obj.getCfrmpass();
 
-    /*change_info_pass = change_info_obj.changegetPassword();
-    change_info_cfrmpass = change_info_obj.changegeCfrmPassword();*/
-
-    /*change_info_pass_present = change_info_obj.changegetPresentPass();*/
-
     change_info_obj.changeSelection();
 
     in_change_file.open("owner-details.txt");
-    out_change_file.open("owner-details-temp.txt", std::ios_base::app);
+    out_change_file.open("owner-detail-temp.txt", std::ios_base::app);
 
     switch(change_info_obj.changegetSelection()) {
 
-        case 1 : change_info_obj.changeUsername();
+        case 1 :
+                 change_info_obj.changeUsername();
                  change_info_id_present = change_info_obj.changegetPresentId();
                  change_info_username = change_info_obj.changegetUsername();
                  break;
 
-        case 2 : change_info_obj.changePassword();
+        case 2 :
+                 change_info_obj.changePassword();
                  change_info_id_present = change_info_obj.changegetPresentId();
                  change_info_pass = change_info_obj.changegetPassword();
                  change_info_cfrmpass = change_info_obj.changegeCfrmPassword();
@@ -1378,27 +1373,35 @@ void changeInfoLogic() {
                     out_change_file << change_readid << setw(15) << oname << setw(15) << password << setw(15) << cfrmpassword<<endl;
                 }
 
-                cout<<endl;
-                cout<<"Username is updated !"<<endl;
-
             } else {
                 if(change_readid == change_info_id_present) {
                     out_change_file << change_readid<< setw(15) << oname << setw(15) << change_info_pass  << setw(15) << change_info_cfrmpass<<endl;
                 } else {
                     out_change_file << change_readid << setw(15) << oname << setw(15) << password << setw(15) << cfrmpassword<<endl;
                 }
-
-                cout<<endl;
-                cout<<"Password is updated !"<<endl;
-
             }
         }
 
         out_change_file.close();
         in_change_file.close();
 
-        remove("owner-details.txt");
-        rename("owner-details-temp.txt", "owner-details.txt");
+        if( remove( "owner-details.txt" ) != 0 ) {
+
+            perror( "Error deleting file" );
+
+        } else {
+
+            if(change_info_obj.changegetSelection() == 1) {
+                cout<<endl;
+                cout<<"Username is updated successfully"<<endl;
+            } else {
+                cout<<endl;
+                cout<<"Password is updated successfully"<<endl;
+            }
+
+            remove("owner-details.txt");
+            rename("owner-detail-temp.txt", "owner-details.txt");
+        }
 
     } else {
         cout << "File not found";
@@ -1410,9 +1413,10 @@ void changeInfoLogic() {
 
 int main() {
 
-    signupDisplayLogic();
 
-    //deleteItemsLogic();
+    //signupDisplayLogic();
+    menuDisplayLogic();
+
     return 0;
 }
 
@@ -1426,6 +1430,7 @@ int main() {
 //          https://www.youtube.com/watch?v=1xH_w-bTOVc&list=LLKDL2NRkpulBjnktk_gDrsQ&index=1&t=1459s
 //          https://www.educative.io/edpresso/what-is-a-cpp-abstract-class
 //			http://key-to-programming.blogspot.com/2015/01/program-for-auto-number-generator-auto.html
+//          https://stackoverflow.com/questions/13887808/permission-denied-when-i-use-remove
 
 
 /*    TODO  1) random gen number issue ( X ) */
