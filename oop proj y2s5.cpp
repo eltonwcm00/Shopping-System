@@ -149,7 +149,7 @@ public:
         cout<<" 2. Insert New Items "<<endl;
         cout<<" 3. Update Information Of Items "<<endl;
         cout<<" 4. Delete Items "<<endl;
-        cout<<" 5. Change Username or Password "<<endl;
+        cout<<" 5. Update Profile "<<endl;
         cout<<" 0. Log Out "<<endl;
     }
 
@@ -669,7 +669,7 @@ void menuDisplayLogic() {
                 break;
 
             case 5 :  cout<<"=========================================="<<endl;
-                cout<<"          CHANGE PASS / USERNAME          "<<endl;
+                cout<<"          UPDATE PROFILE INFORMATION          "<<endl;
                 cout<<"=========================================="<<endl;
                 cout<<endl;
 
@@ -721,7 +721,7 @@ void registerLogic() {
         cfrmpassword = reg_obj.getCfrmpass();
 
         cout<<endl;
-        cout<<"Register is completed and the data is saved ! You can now proceed to log into the existing account"<<endl<<endl;
+        cout<<"Register is completed and the data is saved ! You can now access the system features"<<endl<<endl;
 
         out_reg_file<<id<<setw(15)<<oname<<setw(15)<<password<<setw(15)<<cfrmpassword<<endl;
     }
@@ -805,7 +805,7 @@ void loginPassValidationLogic() {
 
         if(validate_pass) {
             cout<<"Password is matched !"<<endl<<endl;
-            menuDisplayLogic();
+            //menuDisplayLogic();
         } else {
             cout<<"Password incorrect ! Please try again later"<<endl<<endl;
             exit(1);
@@ -1387,7 +1387,7 @@ void changeInfoLogic() {
 
         if( remove( "owner-details.txt" ) != 0 ) {
 
-            perror( "Error deleting file" );
+            perror( "Error remove and swapping from the temp file to user details file" );
 
         } else {
 
@@ -1414,7 +1414,7 @@ void changeInfoLogic() {
 int main() {
 
 
-    //signupDisplayLogic();
+    signupDisplayLogic();
     menuDisplayLogic();
 
     return 0;
@@ -1438,4 +1438,4 @@ int main() {
 /*    TODO  3) login / register before using ( X ) */
 /*    TODO  4) display only 10 items per page */
 /*    TODO  5) analyze sales of shopper and generate a report */
-/*    TODO  6) able to change username / password */
+/*    TODO  6) able to change username / password ( X ) */
